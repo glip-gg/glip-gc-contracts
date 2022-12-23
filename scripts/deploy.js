@@ -11,13 +11,13 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address); 
 
-  const GlipGCToken = await hre.ethers.getContractFactory("GlipGCToken");
-  const token = await GlipGCToken.deploy();
+  const GlipGCToken = await hre.ethers.getContractFactory("GlipGCAirdrop");
+  const token = await GlipGCToken.deploy('0x36496532D675bfd42011e60B82BB5A0825f4a02E');
 
   await token.deployed();
 
   console.log(
-    `token deployed to ${lock.address}`
+    `token deployed to ${token.address}`
   );
 }
 
