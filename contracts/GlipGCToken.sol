@@ -11,6 +11,12 @@ contract GlipGCToken is ERC20, ERC20Burnable, Pausable, AccessControl, ERC20Perm
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
+    event DestroyedBlackFunds(address _blackListedUser, uint _balance);
+    event AddedBlackList(address _user);
+    event RemovedBlackList(address _user);
+
+    mapping (address => bool) public isBlackListed;
+
     constructor() ERC20("GlipGCToken", "GC") ERC20Permit("GlipGCToken") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
@@ -34,6 +40,30 @@ contract GlipGCToken is ERC20, ERC20Burnable, Pausable, AccessControl, ERC20Perm
         whenNotPaused
         override
     {
+        if (to != address(0)) {
+            require(!isBlackListed[from]);
+        }
         super._beforeTokenTransfer(from, to, amount);
+    }
+
+    function getBlackListStatus(address _user) external view returns (bool) {
+        return isBlackListed[_user];
+    }
+
+    function addBlackList (address _evilUser) public onlyRole(PAUSER_ROLE) {
+        isBlackListed[_evilUser] = true;
+        emit AddedBlackList(_evilUser);
+    }
+
+    function removeBlackList (address _clearedUser) public onlyRole(PAUSER_ROLE) {
+        isBlackListed[_clearedUser] = false;
+        emit RemovedBlackList(_clearedUser);
+    }
+
+    function destroyBlackFunds (address _blackListedUser) public onlyRole(PAUSER_ROLE) {
+        require(isBlackListed[_blackListedUser]);
+        uint dirtyFunds = balanceOf(_blackListedUser);
+        _burn(_blackListedUser, dirtyFunds);
+        emit DestroyedBlackFunds(_blackListedUser, dirtyFunds);
     }
 }
