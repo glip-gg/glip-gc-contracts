@@ -12,7 +12,7 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address); 
 
   const GlipGCToken = await hre.ethers.getContractFactory("GlipGCAirdrop");
-  const token = await GlipGCToken.deploy('0x36496532D675bfd42011e60B82BB5A0825f4a02E');
+  const token = await GlipGCToken.deploy('0x652921b7d982E955bD58fA5093FAF62186f423d6');
 
   await token.deployed();
 

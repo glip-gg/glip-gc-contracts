@@ -25,20 +25,24 @@ interface IGCToken {
 contract GlipGCHandler is Ownable {
     address public gcToken;
 
-    event GCRewarded(address indexed user, uint256 amount, string rewardTag);
+    event GCMinted(address indexed user, uint256 amount, string mintTag);
     event GCBurned(address indexed user, uint256 amount, string burnTag);
 
     constructor(address _gcToken) {
         gcToken = _gcToken;
     }
 
-    function rewardGC(
+     function setGcToken(address _gcToken) public onlyOwner {
+        gcToken = _gcToken;
+    }
+
+    function mintGC(
         address to,
         uint256 amount,
-        string memory rewardTag
+        string memory mintTag
     ) public onlyOwner {
         IGCToken(gcToken).mint(to, amount);
-        emit GCRewarded(to, amount, rewardTag);
+        emit GCMinted(to, amount, mintTag);
     }
 
     function burnGC(
