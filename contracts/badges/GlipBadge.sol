@@ -4,11 +4,10 @@ pragma solidity ^0.8.9;
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Burnable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract GlipBadge is ERC1155, AccessControl, Pausable, ERC1155Burnable, ERC1155Supply {
+contract GlipBadge is ERC1155, AccessControl, Pausable, ERC1155Supply {
     bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
@@ -61,7 +60,7 @@ contract GlipBadge is ERC1155, AccessControl, Pausable, ERC1155Burnable, ERC1155
         override(ERC1155, ERC1155Supply)
     {
         if (from != address(0) && to != address(0)) {
-            revert("Glip Badge NFTs can not be transferred");
+            revert("Glip Badges can not be transferred");
         }
         super._beforeTokenTransfer(operator, from, to, ids, amounts, data);
     }
