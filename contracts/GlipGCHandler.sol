@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 interface IGCToken {
     function mint(address to, uint256 amount) external;
     function burnFrom(address account, uint256 amount) external;
-     function allowance(address owner, address spender)
+    function allowance(address owner, address spender)
         external
         view
         returns (uint256);
@@ -20,6 +20,7 @@ interface IGCToken {
         bytes32 r,
         bytes32 s
     ) external;
+    function getBlackListStatus(address _user) external view returns (bool);
 }
 
 contract GlipGCHandler is Ownable {
@@ -53,6 +54,7 @@ contract GlipGCHandler is Ownable {
         bytes32 r,
         bytes32 s
     ) public onlyOwner {
+        require(!IGCToken(gcToken).getBlackListStatus(user), "User blacklisted");
         if (IGCToken(gcToken).allowance(user, address(this)) < amount) {
             IGCToken(gcToken).permit(
                 user,
