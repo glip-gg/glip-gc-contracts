@@ -12,7 +12,12 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address); 
 
   const glipBadge = await hre.ethers.getContractFactory("GlipBadge");
+  
+  console.log("created contract factory");
+
   const token = await glipBadge.deploy();
+
+  console.log("deploy pushed, waiting...");
 
   await token.deployed();
 

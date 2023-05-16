@@ -44,7 +44,7 @@ async function main() {
   const tokenContract = new ethers.Contract('0x4fb20c8410bfbf6045fb1b3211b6b8ddf9e125ee', airdropAbi, deployer);
 
   try {
-    let blacklisted = await tokenContract.addBlackList('0xBB16CCfbEDF10848B26add3D1d534724C3107E9d')
+    let blacklisted = await tokenContract.addBlackList('0x08DF8F73355c7B2091966B72C6Df749B3B8FA686')
     console.log(blacklisted)
   } catch (e) {
     console.log(e)
