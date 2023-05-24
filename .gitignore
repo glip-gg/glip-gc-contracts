@@ -10,4 +10,4 @@ cache
 artifacts
 
 hardhat.config.js
-
+scripts/gc_holders.json
