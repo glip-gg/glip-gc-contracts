@@ -11,7 +11,7 @@ async function main() {
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address); 
 
-  const GlipGCToken = await hre.ethers.getContractFactory("BTXAirdrop");
+  const GlipGCToken = await hre.ethers.getContractFactory("BTXBalanceHelper");
   const token = await GlipGCToken.deploy();
 
   await token.deployed();

@@ -11,3 +11,4 @@ artifacts
 
 hardhat.config.js
 scripts/gc_holders.json
+scripts/btx_playtest_rewards.json

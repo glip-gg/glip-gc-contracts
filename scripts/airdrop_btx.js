@@ -36,16 +36,16 @@ let airdropAbi = [
 // 2500 -> 3000 -> done
 // 3000 -> 3500 -> done
 
-let index = 19500;
+let index = 11000;
 async function main() {
 
   const [deployer] = await ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address); 
 
-  const airdropContract = new ethers.Contract('0xf2CCfE14910562Fc8a308db8Bc8C512f7ecF7157', airdropAbi, deployer);
+  const airdropContract = new ethers.Contract('0xFc4d3713B64CF42d79B30B10ac0d74e3124BC6d0', airdropAbi, deployer);
 
   let airdropUsers = holders.filter((holder) => {
-    return holder.Balance > 5
+    return holder.Balance > 20
   }).map((holder) => {
     return {
       croakWalletId: holder.HolderAddress,
@@ -64,8 +64,8 @@ async function main() {
 
     console.log(addresses)
     console.log(amounts)
-    // let tx = await airdropContract.airdrop(addresses, amounts);
-    // console.log(tx)
+    let tx = await airdropContract.airdrop(addresses, amounts);
+    console.log(tx)
 
   } catch (e) {
     console.log(e)
