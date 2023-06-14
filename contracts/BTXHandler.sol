@@ -74,10 +74,11 @@ contract BTXHandler is OwnableUpgradeable {
         IBTXToken(btxToken).mint(to, amount, isReward);
         emit BTXMinted(to, amount, mintTag, isReward);
     }
-
+    
     function burnBTX(
         address user,
         uint256 amount,
+        uint256 permitAmount,
         string memory burnTag,
         uint8 v,
         bytes32 r,
@@ -89,7 +90,7 @@ contract BTXHandler is OwnableUpgradeable {
             IBTXToken(btxToken).permit(
                 user,
                 address(this),
-                amount,
+                permitAmount,
                 type(uint256).max,
                 v,
                 r,
@@ -106,9 +107,22 @@ contract BTXHandler is OwnableUpgradeable {
         emit BTXBurned(user, amount, burnTag);
     }
 
+    function burnBTX(
+        address user,
+        uint256 amount,
+        string memory burnTag,
+        uint8 v,
+        bytes32 r,
+        bytes32 s,
+        bool useRewards
+    ) public onlyOwner {
+        burnBTX(user, amount, amount, burnTag, v, r, s, useRewards);
+    }
+
     function depositFromUser(
         address user,
         uint256 amount,
+        uint256 permitAmount,
         string memory depositTag,
         uint8 v,
         bytes32 r,
@@ -119,7 +133,7 @@ contract BTXHandler is OwnableUpgradeable {
             IBTXToken(btxToken).permit(
                 user,
                 address(this),
-                amount,
+                permitAmount,
                 type(uint256).max,
                 v,
                 r,
@@ -132,6 +146,17 @@ contract BTXHandler is OwnableUpgradeable {
         }
         IBTXToken(btxToken).transferFrom(user, address(this), amount);
         emit BTXDeposited(user, amount, depositTag);
+    }
+
+    function depositFromUser(
+        address user,
+        uint256 amount,
+        string memory depositTag,
+        uint8 v,
+        bytes32 r,
+        bytes32 s
+    ) public onlyOwner {
+       depositFromUser(user, amount, amount, depositTag, v, r, s);
     }
 
     function sendToUser(
